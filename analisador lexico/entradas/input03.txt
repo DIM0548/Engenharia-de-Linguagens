@@ -1,0 +1,5 @@
+if a then
+  if b then
+     b := a
+  else
+     c := b

@@ -1,0 +1,17 @@
+while
+
+
+    a := b
+
+
+    while
+        b := c
+
+        d := e
+
+
+    e := f
+
+
+a := z
+z := w
