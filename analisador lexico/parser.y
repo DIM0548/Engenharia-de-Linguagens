@@ -22,7 +22,7 @@ extern char *yytext;
 %token INCREMENT DECREMENT
 %token MULTIPLY
 
-%type <sValue> param type expr
+%type <sValue> param type expr varlist decl
 
 %start program
 
@@ -44,23 +44,60 @@ stmlist:
 
 stm:
     func_decl { printf("FUNCTION DECL\n"); }
-  | ID ASSIGNMENT expr SEMICOLON { 
-        printf("%s ASSIGN %s\n", $1, $3); 
+  | varlist ASSIGNMENT expr SEMICOLON { 
+        printf("%s := %s\n", $1, $3); 
         free($1); free($3); 
     }
+  | decl SEMICOLON {
+        printf("Declaration: %s\n", $1);
+        free($1);
+    }
   | expr SEMICOLON { 
-        printf("Expression result: %s\n", $1); 
         free($1); 
     }
   | WHILE LCBRACKET stmlist RCBRACKET { 
-        printf("WHILE\n"); 
+        printf("WHILE statement\n"); 
     }
   | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET { 
-        printf("IF statement\n");
+        printf("IF statement\n"); 
+        free($3);
+    }
+  | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET { 
+        printf("IF-ELSE statement\n"); 
         free($3);
     }
 ;
 
+varlist:
+    ID { $$ = strdup($1); }
+  | varlist COMMA ID { 
+        asprintf(&$$, "%s, %s", $1, $3); 
+        free($1); free($3); 
+    }
+  | varlist COMMA ID LBRACKET RBRACKET { 
+        asprintf(&$$, "%s, %s[]", $1, $3); 
+        free($1); free($3); 
+    }
+  | varlist COMMA ID LBRACKET RBRACKET LBRACKET RBRACKET { 
+        asprintf(&$$, "%s, %s[][]", $1, $3); 
+        free($1); free($3); 
+    }
+  | ID LBRACKET RBRACKET { 
+        asprintf(&$$, "%s[]", $1); 
+        free($1); 
+    }
+  | ID LBRACKET RBRACKET LBRACKET RBRACKET { 
+        asprintf(&$$, "%s[][]", $1); 
+        free($1); 
+    }
+;
+
+decl:
+    varlist COLON type { 
+        asprintf(&$$, "%s : %s", $1, $3); 
+        free($1); free($3); 
+    }
+;
 
 func_decl:
   FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET {

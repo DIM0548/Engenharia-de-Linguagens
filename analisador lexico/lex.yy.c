@@ -374,7 +374,7 @@ static const flex_int16_t yy_accept[68] =
 static const YY_CHAR yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    1,    1,    1,    1,    4,    1,    5,
         6,    7,    8,    9,   10,   11,   12,   13,   13,   13,
@@ -942,7 +942,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 43 "lexer.l"
-{ printf("Invalid character: %s\n", yytext); }
+{ printf("Invalid character at line %d: '%s' (ASCII %d)\n", yylineno, yytext, yytext[0]); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP

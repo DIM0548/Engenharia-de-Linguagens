@@ -5,7 +5,7 @@
 
 %%
 
-[ \t\n]               ;
+[ \t\n\r]               ;
 "//"[^\n]*            ;
 [0-9]+                { yylval.sValue = strdup(yytext); return NUMBER; }
 "{"                   { return LCBRACKET; }
@@ -40,7 +40,7 @@
 "/"                   { return SLASH; }
 "*"                   { return MULTIPLY; }
 [a-zA-Z][a-zA-Z0-9]*  { yylval.sValue = strdup(yytext); return ID; }
-.                     { printf("Invalid character: %s\n", yytext); }
+.                     { printf("Invalid character at line %d: '%s' (ASCII %d)\n", yylineno, yytext, yytext[0]); }
 
 %%
 

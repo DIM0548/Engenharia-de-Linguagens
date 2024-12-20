@@ -1,11 +1,4 @@
 Rodando no arquivo: input01.txt
-Expression result: (1 + 1)
-Invalid character: 
-Expression result: (1 + (2 * 3))
-Invalid character: 
-Expression result: ((2 * 3) + (5 * 6))
-Invalid character: 
-Expression result: ((2 * (3 + 5)) * 6)
 STM
 STM-STMLIST
 STM-STMLIST
@@ -13,15 +6,41 @@ STM-STMLIST
 PROG
 
 Rodando no arquivo: input02.txt
-id1 ASSIGN id2
+id1 := id2
 STM
 PROG
 
 Rodando no arquivo: input03.txt
+b := a
+STM
+c := b
+STM
+IF-ELSE statement
+STM
+IF statement
+STM
+PROG
 
 Rodando no arquivo: input04.txt
 
 Rodando no arquivo: input05.txt
 
 Rodando no arquivo: input06.txt
+a := b
+STM
+WHILE statement
+b := c
+d := e
+STM
+STM-STMLIST
+WHILE statement
+e := f
+a := z
+z := w
+STM
+STM-STMLIST
+STM-STMLIST
+STM-STMLIST
+STM-STMLIST
+PROG
 

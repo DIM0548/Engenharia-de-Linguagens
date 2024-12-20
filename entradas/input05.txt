@@ -1,0 +1,10 @@
+function soma(int a, b; float c): int
+begin
+end
+
+procedure exiba()
+begin
+end
+
+begin
+end

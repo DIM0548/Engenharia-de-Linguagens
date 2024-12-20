@@ -7,7 +7,7 @@ RESULTADO="resultado.txt"
 
 echo "Compilando o lexer e o parser..."
 flex lexer.l
-bison parser.y -o y.tab.c -d -v -g
+bison parser.y -o y.tab.c -d -v -g 
 gcc lex.yy.c y.tab.c -o compiler
 
 for arquivo in "$ENTRADAS_DIR"/*.txt; do

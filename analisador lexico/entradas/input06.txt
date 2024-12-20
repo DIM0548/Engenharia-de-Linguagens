@@ -1,17 +1,12 @@
-while
+while {
+    a := b;
+}
 
+while {
+    b := c;
+    d := e;
+}
 
-    a := b
-
-
-    while
-        b := c
-
-        d := e
-
-
-    e := f
-
-
-a := z
-z := w
+e := f;
+a := z;
+z := w;
