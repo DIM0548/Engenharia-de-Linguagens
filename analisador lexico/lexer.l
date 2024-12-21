@@ -40,6 +40,7 @@
 "--"                  { return DECREMENT; }
 "/"                   { return SLASH; }
 "*"                   { return MULTIPLY; }
+"procedure"           { return PROCEDURE; }
 [a-zA-Z][a-zA-Z0-9]*  { yylval.sValue = strdup(yytext); return ID; }
 .                     { printf("Invalid character at line %d: '%s' (ASCII %d)\n", yylineno, yytext, yytext[0]); }
 

@@ -38,9 +38,13 @@ Rodando no arquivo: input05.txt
 Parameter a of type int
 Parameter b of type int
 Parameter c of type float
-Single parameter
-Parameter list
-Parameter list
+Function soma defined
+FUNCTION DECL
+Procedure exiba defined
+FUNCTION DECL
+STM
+STM-STMLIST
+PROG
 
 Rodando no arquivo: input06.txt
 a := b

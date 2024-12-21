@@ -22,6 +22,7 @@ extern char *yytext;
 %token INCREMENT DECREMENT
 %token MULTIPLY
 %token FLOAT
+%token PROCEDURE
 
 %type <sValue> param type expr varlist decl
 
@@ -101,16 +102,17 @@ decl:
 ;
 
 func_decl:
-  FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET {
-    printf("Function %s defined\n", $2);
-    free($2);
-  }
+    FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET
+    | FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET RCBRACKET { printf("Function %s defined\n", $2); free($2); }
+    | PROCEDURE ID LPAREN RPAREN LCBRACKET stmlist RCBRACKET
+    | PROCEDURE ID LPAREN RPAREN LCBRACKET RCBRACKET { printf("Procedure %s defined\n", $2); free($2); }
 ;
 
+
 param_list:
-  /* Vazio */
-  | param { printf("Single parameter\n"); }
-  | param COMMA param_list { printf("Parameter list\n"); }
+    /* vazio */
+  | param
+  | param COMMA param_list
 ;
 
 param:
