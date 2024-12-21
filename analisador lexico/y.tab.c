@@ -625,8 +625,8 @@ static const yytype_uint8 yyrline[] =
 {
        0,    38,    38,    42,    43,    47,    48,    52,    56,    59,
       62,    66,    73,    74,    78,    82,    86,    90,    97,   104,
-     110,   112,   113,   117,   121,   122,   123,   128,   129,   130,
-     134,   138,   142,   146
+     110,   112,   113,   117,   121,   122,   123,   127,   128,   129,
+     133,   137,   141,   145
 };
 #endif
 
@@ -690,10 +690,10 @@ static const yytype_int8 yydefact[] =
        0,    28,    27,     0,     0,     0,     0,     0,     2,     3,
        0,     0,     5,     0,     0,    27,     0,     0,     0,     0,
        1,     4,     0,     0,     0,     7,     8,     0,     0,     0,
-       0,    16,    33,     0,     0,    20,    13,    24,    25,    18,
+       0,    16,    33,     0,     0,    20,    13,    24,    26,    18,
        0,    29,    30,    32,    31,     0,     0,     9,     0,     0,
       21,     0,     0,     6,    17,     0,     0,     0,    20,    14,
-      26,     0,    23,     0,    22,     0,    10,     0,    15,     0,
+      25,     0,    23,     0,    22,     0,    10,     0,    15,     0,
        0,     0,     0,     0,    19,    11
 };
 
@@ -768,7 +768,7 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     1,     2,     1,     4,     2,     2,     4,
        7,    11,     1,     3,     5,     7,     3,     5,     3,    10,
-       0,     1,     3,     3,     1,     1,     3,     1,     1,     3,
+       0,     1,     3,     3,     1,     3,     1,     1,     1,     3,
        3,     3,     3,     3
 };
 
@@ -1401,32 +1401,32 @@ yyreduce:
 #line 1402 "y.tab.c"
     break;
 
-  case 25: /* type: FLOAT  */
+  case 25: /* type: INTEGER LBRACKET RBRACKET  */
 #line 122 "parser.y"
-          { (yyval.sValue) = strdup("float"); }
+                              { (yyval.sValue) = strdup("int[]"); }
 #line 1408 "y.tab.c"
     break;
 
-  case 26: /* type: INTEGER LBRACKET RBRACKET  */
+  case 26: /* type: FLOAT  */
 #line 123 "parser.y"
-                              { (yyval.sValue) = strdup("int[]"); }
+            { (yyval.sValue) = strdup("float"); }
 #line 1414 "y.tab.c"
     break;
 
   case 27: /* expr: ID  */
-#line 128 "parser.y"
+#line 127 "parser.y"
                                 { (yyval.sValue) = strdup((yyvsp[0].sValue)); }
 #line 1420 "y.tab.c"
     break;
 
   case 28: /* expr: NUMBER  */
-#line 129 "parser.y"
+#line 128 "parser.y"
                                 { (yyval.sValue) = strdup((yyvsp[0].sValue)); }
 #line 1426 "y.tab.c"
     break;
 
   case 29: /* expr: expr PLUS expr  */
-#line 130 "parser.y"
+#line 129 "parser.y"
                                 { 
         asprintf(&(yyval.sValue), "(%s + %s)", (yyvsp[-2].sValue), (yyvsp[0].sValue)); 
         free((yyvsp[-2].sValue)); free((yyvsp[0].sValue)); 
@@ -1435,7 +1435,7 @@ yyreduce:
     break;
 
   case 30: /* expr: expr MINUS expr  */
-#line 134 "parser.y"
+#line 133 "parser.y"
                                 { 
         asprintf(&(yyval.sValue), "(%s - %s)", (yyvsp[-2].sValue), (yyvsp[0].sValue)); 
         free((yyvsp[-2].sValue)); free((yyvsp[0].sValue)); 
@@ -1444,7 +1444,7 @@ yyreduce:
     break;
 
   case 31: /* expr: expr MULTIPLY expr  */
-#line 138 "parser.y"
+#line 137 "parser.y"
                                 { 
         asprintf(&(yyval.sValue), "(%s * %s)", (yyvsp[-2].sValue), (yyvsp[0].sValue)); 
         free((yyvsp[-2].sValue)); free((yyvsp[0].sValue)); 
@@ -1453,7 +1453,7 @@ yyreduce:
     break;
 
   case 32: /* expr: expr SLASH expr  */
-#line 142 "parser.y"
+#line 141 "parser.y"
                                 { 
         asprintf(&(yyval.sValue), "(%s / %s)", (yyvsp[-2].sValue), (yyvsp[0].sValue)); 
         free((yyvsp[-2].sValue)); free((yyvsp[0].sValue)); 
@@ -1462,7 +1462,7 @@ yyreduce:
     break;
 
   case 33: /* expr: LPAREN expr RPAREN  */
-#line 146 "parser.y"
+#line 145 "parser.y"
                                 { (yyval.sValue) = (yyvsp[-1].sValue); }
 #line 1468 "y.tab.c"
     break;
@@ -1661,7 +1661,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 149 "parser.y"
+#line 148 "parser.y"
 
 
 int main(void) {

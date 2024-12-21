@@ -48,8 +48,8 @@ Grammar
    22 param: ID COLON type
 
    23 type: INTEGER
-   24     | FLOAT
-   25     | INTEGER LBRACKET RBRACKET
+   24     | INTEGER LBRACKET RBRACKET
+   25     | FLOAT
 
    26 expr: ID
    27     | NUMBER
@@ -66,13 +66,13 @@ Terminals, with rules where they appear
     error (256)
     NUMBER <sValue> (258) 27
     ID <sValue> (259) 11 12 13 14 15 16 18 22 26
-    INTEGER <sValue> (260) 23 25
+    INTEGER <sValue> (260) 23 24
     LCBRACKET (261) 8 9 10 18
     RCBRACKET (262) 8 9 10 18
     LPAREN (263) 9 10 18 32
     RPAREN (264) 9 10 18 32
-    LBRACKET (265) 13 14 15 16 25
-    RBRACKET (266) 13 14 15 16 25
+    LBRACKET (265) 13 14 15 16 24
+    RBRACKET (266) 13 14 15 16 24
     IF (267) 9 10
     ELSE (268) 10
     WHILE (269) 8
@@ -96,7 +96,7 @@ Terminals, with rules where they appear
     INCREMENT (287)
     DECREMENT (288)
     MULTIPLY (289) 30
-    FLOAT (290) 24
+    FLOAT (290) 25
 
 
 Nonterminals, with rules where they appear
@@ -524,7 +524,7 @@ State 36
 State 37
 
    23 type: INTEGER •
-   25     | INTEGER • LBRACKET RBRACKET
+   24     | INTEGER • LBRACKET RBRACKET
 
     LBRACKET  shift, and go to state 52
 
@@ -533,9 +533,9 @@ State 37
 
 State 38
 
-   24 type: FLOAT •
+   25 type: FLOAT •
 
-    $default  reduce using rule 24 (type)
+    $default  reduce using rule 25 (type)
 
 
 State 39
@@ -668,7 +668,7 @@ State 51
 
 State 52
 
-   25 type: INTEGER LBRACKET • RBRACKET
+   24 type: INTEGER LBRACKET • RBRACKET
 
     RBRACKET  shift, and go to state 60
 
@@ -748,9 +748,9 @@ State 59
 
 State 60
 
-   25 type: INTEGER LBRACKET RBRACKET •
+   24 type: INTEGER LBRACKET RBRACKET •
 
-    $default  reduce using rule 25 (type)
+    $default  reduce using rule 24 (type)
 
 
 State 61

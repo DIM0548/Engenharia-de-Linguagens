@@ -1,10 +1,17 @@
-function soma(a : int, b : int, c : float): int {
+while {
 
+
+    a = b;
+
+
+    while {
+        b = c;
+
+        d = e;
+    }
+
+    e = f;
 }
 
-procedure exiba() {
-
-}
-
-{
-}
+a = z;
+z = w;

@@ -35,6 +35,14 @@ STM-STMLIST
 PROG
 
 Rodando no arquivo: input05.txt
+Parameter a of type int
+Parameter b of type int
+Parameter c of type float
+Single parameter
+Parameter list
+Parameter list
+
+Rodando no arquivo: input06.txt
 a := b
 b := c
 d := e
@@ -52,12 +60,4 @@ STM
 STM-STMLIST
 STM-STMLIST
 PROG
-
-Rodando no arquivo: input06.txt
-Parameter a of type int
-Parameter b of type int
-Parameter c of type float
-Single parameter
-Parameter list
-Parameter list
 

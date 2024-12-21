@@ -119,10 +119,9 @@ param:
 
 type:
   INTEGER { $$ = strdup("int"); }
-  | FLOAT { $$ = strdup("float"); }
   | INTEGER LBRACKET RBRACKET { $$ = strdup("int[]"); }
+  | FLOAT   { $$ = strdup("float"); }
 ;
-
 
 expr:
     ID                          { $$ = strdup($1); }
