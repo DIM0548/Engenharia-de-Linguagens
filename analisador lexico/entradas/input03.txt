@@ -1,8 +1,7 @@
-if (a){
-  if (b) {
-     b := a;
-  }
-  else {
-     c := b;
+if(a) {
+  if(b) {
+     b = a;
+  } else {
+     c = b;
   }
 }

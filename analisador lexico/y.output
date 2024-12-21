@@ -48,30 +48,31 @@ Grammar
    22 param: ID COLON type
 
    23 type: INTEGER
-   24     | INTEGER LBRACKET RBRACKET
+   24     | FLOAT
+   25     | INTEGER LBRACKET RBRACKET
 
-   25 expr: ID
-   26     | NUMBER
-   27     | expr PLUS expr
-   28     | expr MINUS expr
-   29     | expr MULTIPLY expr
-   30     | expr SLASH expr
-   31     | LPAREN expr RPAREN
+   26 expr: ID
+   27     | NUMBER
+   28     | expr PLUS expr
+   29     | expr MINUS expr
+   30     | expr MULTIPLY expr
+   31     | expr SLASH expr
+   32     | LPAREN expr RPAREN
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
     error (256)
-    NUMBER <sValue> (258) 26
-    ID <sValue> (259) 11 12 13 14 15 16 18 22 25
-    INTEGER <sValue> (260) 23 24
+    NUMBER <sValue> (258) 27
+    ID <sValue> (259) 11 12 13 14 15 16 18 22 26
+    INTEGER <sValue> (260) 23 25
     LCBRACKET (261) 8 9 10 18
     RCBRACKET (262) 8 9 10 18
-    LPAREN (263) 9 10 18 31
-    RPAREN (264) 9 10 18 31
-    LBRACKET (265) 13 14 15 16 24
-    RBRACKET (266) 13 14 15 16 24
+    LPAREN (263) 9 10 18 32
+    RPAREN (264) 9 10 18 32
+    LBRACKET (265) 13 14 15 16 25
+    RBRACKET (266) 13 14 15 16 25
     IF (267) 9 10
     ELSE (268) 10
     WHILE (269) 8
@@ -89,48 +90,49 @@ Terminals, with rules where they appear
     EQ (281)
     AND (282)
     OR (283)
-    PLUS (284) 27
-    MINUS (285) 28
-    SLASH (286) 30
+    PLUS (284) 28
+    MINUS (285) 29
+    SLASH (286) 31
     INCREMENT (287)
     DECREMENT (288)
-    MULTIPLY (289) 29
+    MULTIPLY (289) 30
+    FLOAT (290) 24
 
 
 Nonterminals, with rules where they appear
 
-    $accept (35)
+    $accept (36)
         on left: 0
-    program (36)
+    program (37)
         on left: 1
         on right: 0
-    stmlist (37)
+    stmlist (38)
         on left: 2 3
         on right: 1 3 8 9 10 18
-    stm (38)
+    stm (39)
         on left: 4 5 6 7 8 9 10
         on right: 2 3
-    varlist <sValue> (39)
+    varlist <sValue> (40)
         on left: 11 12 13 14 15 16
         on right: 5 12 13 14 17
-    decl <sValue> (40)
+    decl <sValue> (41)
         on left: 17
         on right: 6
-    func_decl (41)
+    func_decl (42)
         on left: 18
         on right: 4
-    param_list (42)
+    param_list (43)
         on left: 19 20 21
         on right: 18 21
-    param <sValue> (43)
+    param <sValue> (44)
         on left: 22
         on right: 20 21
-    type <sValue> (44)
-        on left: 23 24
+    type <sValue> (45)
+        on left: 23 24 25
         on right: 17 18 22
-    expr <sValue> (45)
-        on left: 25 26 27 28 29 30 31
-        on right: 5 7 9 10 27 28 29 30 31
+    expr <sValue> (46)
+        on left: 26 27 28 29 30 31 32
+        on right: 5 7 9 10 28 29 30 31 32
 
 
 State 0
@@ -155,9 +157,9 @@ State 0
 
 State 1
 
-   26 expr: NUMBER •
+   27 expr: NUMBER •
 
-    $default  reduce using rule 26 (expr)
+    $default  reduce using rule 27 (expr)
 
 
 State 2
@@ -165,19 +167,19 @@ State 2
    11 varlist: ID •
    15        | ID • LBRACKET RBRACKET
    16        | ID • LBRACKET RBRACKET LBRACKET RBRACKET
-   25 expr: ID •
+   26 expr: ID •
 
     LBRACKET  shift, and go to state 14
 
     COMMA       reduce using rule 11 (varlist)
     COLON       reduce using rule 11 (varlist)
     ASSIGNMENT  reduce using rule 11 (varlist)
-    $default    reduce using rule 25 (expr)
+    $default    reduce using rule 26 (expr)
 
 
 State 3
 
-   31 expr: LPAREN • expr RPAREN
+   32 expr: LPAREN • expr RPAREN
 
     NUMBER  shift, and go to state 1
     ID      shift, and go to state 15
@@ -274,10 +276,10 @@ State 12
 State 13
 
     7 stm: expr • SEMICOLON
-   27 expr: expr • PLUS expr
-   28     | expr • MINUS expr
-   29     | expr • MULTIPLY expr
-   30     | expr • SLASH expr
+   28 expr: expr • PLUS expr
+   29     | expr • MINUS expr
+   30     | expr • MULTIPLY expr
+   31     | expr • SLASH expr
 
     SEMICOLON  shift, and go to state 26
     PLUS       shift, and go to state 27
@@ -296,18 +298,18 @@ State 14
 
 State 15
 
-   25 expr: ID •
+   26 expr: ID •
 
-    $default  reduce using rule 25 (expr)
+    $default  reduce using rule 26 (expr)
 
 
 State 16
 
-   27 expr: expr • PLUS expr
-   28     | expr • MINUS expr
-   29     | expr • MULTIPLY expr
-   30     | expr • SLASH expr
-   31     | LPAREN expr • RPAREN
+   28 expr: expr • PLUS expr
+   29     | expr • MINUS expr
+   30     | expr • MULTIPLY expr
+   31     | expr • SLASH expr
+   32     | LPAREN expr • RPAREN
 
     RPAREN    shift, and go to state 32
     PLUS      shift, and go to state 27
@@ -382,8 +384,9 @@ State 23
    17 decl: varlist COLON • type
 
     INTEGER  shift, and go to state 37
+    FLOAT    shift, and go to state 38
 
-    type  go to state 38
+    type  go to state 39
 
 
 State 24
@@ -394,7 +397,7 @@ State 24
     ID      shift, and go to state 15
     LPAREN  shift, and go to state 3
 
-    expr  go to state 39
+    expr  go to state 40
 
 
 State 25
@@ -413,18 +416,7 @@ State 26
 
 State 27
 
-   27 expr: expr PLUS • expr
-
-    NUMBER  shift, and go to state 1
-    ID      shift, and go to state 15
-    LPAREN  shift, and go to state 3
-
-    expr  go to state 40
-
-
-State 28
-
-   28 expr: expr MINUS • expr
+   28 expr: expr PLUS • expr
 
     NUMBER  shift, and go to state 1
     ID      shift, and go to state 15
@@ -433,9 +425,9 @@ State 28
     expr  go to state 41
 
 
-State 29
+State 28
 
-   30 expr: expr SLASH • expr
+   29 expr: expr MINUS • expr
 
     NUMBER  shift, and go to state 1
     ID      shift, and go to state 15
@@ -444,9 +436,9 @@ State 29
     expr  go to state 42
 
 
-State 30
+State 29
 
-   29 expr: expr MULTIPLY • expr
+   31 expr: expr SLASH • expr
 
     NUMBER  shift, and go to state 1
     ID      shift, and go to state 15
@@ -455,33 +447,44 @@ State 30
     expr  go to state 43
 
 
+State 30
+
+   30 expr: expr MULTIPLY • expr
+
+    NUMBER  shift, and go to state 1
+    ID      shift, and go to state 15
+    LPAREN  shift, and go to state 3
+
+    expr  go to state 44
+
+
 State 31
 
    15 varlist: ID LBRACKET RBRACKET •
    16        | ID LBRACKET RBRACKET • LBRACKET RBRACKET
 
-    LBRACKET  shift, and go to state 44
+    LBRACKET  shift, and go to state 45
 
     $default  reduce using rule 15 (varlist)
 
 
 State 32
 
-   31 expr: LPAREN expr RPAREN •
+   32 expr: LPAREN expr RPAREN •
 
-    $default  reduce using rule 31 (expr)
+    $default  reduce using rule 32 (expr)
 
 
 State 33
 
     9 stm: IF LPAREN expr • RPAREN LCBRACKET stmlist RCBRACKET
    10    | IF LPAREN expr • RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET
-   27 expr: expr • PLUS expr
-   28     | expr • MINUS expr
-   29     | expr • MULTIPLY expr
-   30     | expr • SLASH expr
+   28 expr: expr • PLUS expr
+   29     | expr • MINUS expr
+   30     | expr • MULTIPLY expr
+   31     | expr • SLASH expr
 
-    RPAREN    shift, and go to state 45
+    RPAREN    shift, and go to state 46
     PLUS      shift, and go to state 27
     MINUS     shift, and go to state 28
     SLASH     shift, and go to state 29
@@ -492,19 +495,19 @@ State 34
 
     8 stm: WHILE LCBRACKET stmlist • RCBRACKET
 
-    RCBRACKET  shift, and go to state 46
+    RCBRACKET  shift, and go to state 47
 
 
 State 35
 
    18 func_decl: FUNCTION ID LPAREN • param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET
 
-    ID  shift, and go to state 47
+    ID  shift, and go to state 48
 
     $default  reduce using rule 19 (param_list)
 
-    param_list  go to state 48
-    param       go to state 49
+    param_list  go to state 49
+    param       go to state 50
 
 
 State 36
@@ -513,7 +516,7 @@ State 36
    13        | varlist COMMA ID • LBRACKET RBRACKET
    14        | varlist COMMA ID • LBRACKET RBRACKET LBRACKET RBRACKET
 
-    LBRACKET  shift, and go to state 50
+    LBRACKET  shift, and go to state 51
 
     $default  reduce using rule 12 (varlist)
 
@@ -521,56 +524,49 @@ State 36
 State 37
 
    23 type: INTEGER •
-   24     | INTEGER • LBRACKET RBRACKET
+   25     | INTEGER • LBRACKET RBRACKET
 
-    LBRACKET  shift, and go to state 51
+    LBRACKET  shift, and go to state 52
 
     $default  reduce using rule 23 (type)
 
 
 State 38
 
+   24 type: FLOAT •
+
+    $default  reduce using rule 24 (type)
+
+
+State 39
+
    17 decl: varlist COLON type •
 
     $default  reduce using rule 17 (decl)
 
 
-State 39
+State 40
 
     5 stm: varlist ASSIGNMENT expr • SEMICOLON
-   27 expr: expr • PLUS expr
-   28     | expr • MINUS expr
-   29     | expr • MULTIPLY expr
-   30     | expr • SLASH expr
+   28 expr: expr • PLUS expr
+   29     | expr • MINUS expr
+   30     | expr • MULTIPLY expr
+   31     | expr • SLASH expr
 
-    SEMICOLON  shift, and go to state 52
+    SEMICOLON  shift, and go to state 53
     PLUS       shift, and go to state 27
     MINUS      shift, and go to state 28
     SLASH      shift, and go to state 29
     MULTIPLY   shift, and go to state 30
 
 
-State 40
-
-   27 expr: expr • PLUS expr
-   27     | expr PLUS expr •
-   28     | expr • MINUS expr
-   29     | expr • MULTIPLY expr
-   30     | expr • SLASH expr
-
-    SLASH     shift, and go to state 29
-    MULTIPLY  shift, and go to state 30
-
-    $default  reduce using rule 27 (expr)
-
-
 State 41
 
-   27 expr: expr • PLUS expr
-   28     | expr • MINUS expr
-   28     | expr MINUS expr •
-   29     | expr • MULTIPLY expr
-   30     | expr • SLASH expr
+   28 expr: expr • PLUS expr
+   28     | expr PLUS expr •
+   29     | expr • MINUS expr
+   30     | expr • MULTIPLY expr
+   31     | expr • SLASH expr
 
     SLASH     shift, and go to state 29
     MULTIPLY  shift, and go to state 30
@@ -580,104 +576,118 @@ State 41
 
 State 42
 
-   27 expr: expr • PLUS expr
-   28     | expr • MINUS expr
-   29     | expr • MULTIPLY expr
-   30     | expr • SLASH expr
-   30     | expr SLASH expr •
+   28 expr: expr • PLUS expr
+   29     | expr • MINUS expr
+   29     | expr MINUS expr •
+   30     | expr • MULTIPLY expr
+   31     | expr • SLASH expr
 
+    SLASH     shift, and go to state 29
     MULTIPLY  shift, and go to state 30
-
-    $default  reduce using rule 30 (expr)
-
-
-State 43
-
-   27 expr: expr • PLUS expr
-   28     | expr • MINUS expr
-   29     | expr • MULTIPLY expr
-   29     | expr MULTIPLY expr •
-   30     | expr • SLASH expr
 
     $default  reduce using rule 29 (expr)
 
 
+State 43
+
+   28 expr: expr • PLUS expr
+   29     | expr • MINUS expr
+   30     | expr • MULTIPLY expr
+   31     | expr • SLASH expr
+   31     | expr SLASH expr •
+
+    MULTIPLY  shift, and go to state 30
+
+    $default  reduce using rule 31 (expr)
+
+
 State 44
 
-   16 varlist: ID LBRACKET RBRACKET LBRACKET • RBRACKET
+   28 expr: expr • PLUS expr
+   29     | expr • MINUS expr
+   30     | expr • MULTIPLY expr
+   30     | expr MULTIPLY expr •
+   31     | expr • SLASH expr
 
-    RBRACKET  shift, and go to state 53
+    $default  reduce using rule 30 (expr)
 
 
 State 45
 
-    9 stm: IF LPAREN expr RPAREN • LCBRACKET stmlist RCBRACKET
-   10    | IF LPAREN expr RPAREN • LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET
+   16 varlist: ID LBRACKET RBRACKET LBRACKET • RBRACKET
 
-    LCBRACKET  shift, and go to state 54
+    RBRACKET  shift, and go to state 54
 
 
 State 46
+
+    9 stm: IF LPAREN expr RPAREN • LCBRACKET stmlist RCBRACKET
+   10    | IF LPAREN expr RPAREN • LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET
+
+    LCBRACKET  shift, and go to state 55
+
+
+State 47
 
     8 stm: WHILE LCBRACKET stmlist RCBRACKET •
 
     $default  reduce using rule 8 (stm)
 
 
-State 47
+State 48
 
    22 param: ID • COLON type
 
-    COLON  shift, and go to state 55
-
-
-State 48
-
-   18 func_decl: FUNCTION ID LPAREN param_list • RPAREN COLON type LCBRACKET stmlist RCBRACKET
-
-    RPAREN  shift, and go to state 56
+    COLON  shift, and go to state 56
 
 
 State 49
 
-   20 param_list: param •
-   21           | param • COMMA param_list
+   18 func_decl: FUNCTION ID LPAREN param_list • RPAREN COLON type LCBRACKET stmlist RCBRACKET
 
-    COMMA  shift, and go to state 57
-
-    $default  reduce using rule 20 (param_list)
+    RPAREN  shift, and go to state 57
 
 
 State 50
 
-   13 varlist: varlist COMMA ID LBRACKET • RBRACKET
-   14        | varlist COMMA ID LBRACKET • RBRACKET LBRACKET RBRACKET
+   20 param_list: param •
+   21           | param • COMMA param_list
 
-    RBRACKET  shift, and go to state 58
+    COMMA  shift, and go to state 58
+
+    $default  reduce using rule 20 (param_list)
 
 
 State 51
 
-   24 type: INTEGER LBRACKET • RBRACKET
+   13 varlist: varlist COMMA ID LBRACKET • RBRACKET
+   14        | varlist COMMA ID LBRACKET • RBRACKET LBRACKET RBRACKET
 
     RBRACKET  shift, and go to state 59
 
 
 State 52
 
+   25 type: INTEGER LBRACKET • RBRACKET
+
+    RBRACKET  shift, and go to state 60
+
+
+State 53
+
     5 stm: varlist ASSIGNMENT expr SEMICOLON •
 
     $default  reduce using rule 5 (stm)
 
 
-State 53
+State 54
 
    16 varlist: ID LBRACKET RBRACKET LBRACKET RBRACKET •
 
     $default  reduce using rule 16 (varlist)
 
 
-State 54
+State 55
 
     9 stm: IF LPAREN expr RPAREN LCBRACKET • stmlist RCBRACKET
    10    | IF LPAREN expr RPAREN LCBRACKET • stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET
@@ -689,7 +699,7 @@ State 54
     WHILE     shift, and go to state 5
     FUNCTION  shift, and go to state 6
 
-    stmlist    go to state 60
+    stmlist    go to state 61
     stm        go to state 9
     varlist    go to state 10
     decl       go to state 11
@@ -697,142 +707,125 @@ State 54
     expr       go to state 13
 
 
-State 55
+State 56
 
    22 param: ID COLON • type
 
     INTEGER  shift, and go to state 37
+    FLOAT    shift, and go to state 38
 
-    type  go to state 61
-
-
-State 56
-
-   18 func_decl: FUNCTION ID LPAREN param_list RPAREN • COLON type LCBRACKET stmlist RCBRACKET
-
-    COLON  shift, and go to state 62
+    type  go to state 62
 
 
 State 57
 
-   21 param_list: param COMMA • param_list
+   18 func_decl: FUNCTION ID LPAREN param_list RPAREN • COLON type LCBRACKET stmlist RCBRACKET
 
-    ID  shift, and go to state 47
-
-    $default  reduce using rule 19 (param_list)
-
-    param_list  go to state 63
-    param       go to state 49
+    COLON  shift, and go to state 63
 
 
 State 58
 
-   13 varlist: varlist COMMA ID LBRACKET RBRACKET •
-   14        | varlist COMMA ID LBRACKET RBRACKET • LBRACKET RBRACKET
+   21 param_list: param COMMA • param_list
 
-    LBRACKET  shift, and go to state 64
+    ID  shift, and go to state 48
 
-    $default  reduce using rule 13 (varlist)
+    $default  reduce using rule 19 (param_list)
+
+    param_list  go to state 64
+    param       go to state 50
 
 
 State 59
 
-   24 type: INTEGER LBRACKET RBRACKET •
+   13 varlist: varlist COMMA ID LBRACKET RBRACKET •
+   14        | varlist COMMA ID LBRACKET RBRACKET • LBRACKET RBRACKET
 
-    $default  reduce using rule 24 (type)
+    LBRACKET  shift, and go to state 65
+
+    $default  reduce using rule 13 (varlist)
 
 
 State 60
 
-    9 stm: IF LPAREN expr RPAREN LCBRACKET stmlist • RCBRACKET
-   10    | IF LPAREN expr RPAREN LCBRACKET stmlist • RCBRACKET ELSE LCBRACKET stmlist RCBRACKET
+   25 type: INTEGER LBRACKET RBRACKET •
 
-    RCBRACKET  shift, and go to state 65
+    $default  reduce using rule 25 (type)
 
 
 State 61
+
+    9 stm: IF LPAREN expr RPAREN LCBRACKET stmlist • RCBRACKET
+   10    | IF LPAREN expr RPAREN LCBRACKET stmlist • RCBRACKET ELSE LCBRACKET stmlist RCBRACKET
+
+    RCBRACKET  shift, and go to state 66
+
+
+State 62
 
    22 param: ID COLON type •
 
     $default  reduce using rule 22 (param)
 
 
-State 62
+State 63
 
    18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON • type LCBRACKET stmlist RCBRACKET
 
     INTEGER  shift, and go to state 37
+    FLOAT    shift, and go to state 38
 
-    type  go to state 66
+    type  go to state 67
 
 
-State 63
+State 64
 
    21 param_list: param COMMA param_list •
 
     $default  reduce using rule 21 (param_list)
 
 
-State 64
+State 65
 
    14 varlist: varlist COMMA ID LBRACKET RBRACKET LBRACKET • RBRACKET
 
-    RBRACKET  shift, and go to state 67
-
-
-State 65
-
-    9 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET •
-   10    | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET • ELSE LCBRACKET stmlist RCBRACKET
-
-    ELSE  shift, and go to state 68
-
-    $default  reduce using rule 9 (stm)
+    RBRACKET  shift, and go to state 68
 
 
 State 66
 
-   18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON type • LCBRACKET stmlist RCBRACKET
+    9 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET •
+   10    | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET • ELSE LCBRACKET stmlist RCBRACKET
 
-    LCBRACKET  shift, and go to state 69
+    ELSE  shift, and go to state 69
+
+    $default  reduce using rule 9 (stm)
 
 
 State 67
+
+   18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON type • LCBRACKET stmlist RCBRACKET
+
+    LCBRACKET  shift, and go to state 70
+
+
+State 68
 
    14 varlist: varlist COMMA ID LBRACKET RBRACKET LBRACKET RBRACKET •
 
     $default  reduce using rule 14 (varlist)
 
 
-State 68
+State 69
 
    10 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE • LCBRACKET stmlist RCBRACKET
 
-    LCBRACKET  shift, and go to state 70
-
-
-State 69
-
-   18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET • stmlist RCBRACKET
-
-    NUMBER    shift, and go to state 1
-    ID        shift, and go to state 2
-    LPAREN    shift, and go to state 3
-    IF        shift, and go to state 4
-    WHILE     shift, and go to state 5
-    FUNCTION  shift, and go to state 6
-
-    stmlist    go to state 71
-    stm        go to state 9
-    varlist    go to state 10
-    decl       go to state 11
-    func_decl  go to state 12
-    expr       go to state 13
+    LCBRACKET  shift, and go to state 71
 
 
 State 70
 
-   10 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET • stmlist RCBRACKET
+   18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET • stmlist RCBRACKET
 
     NUMBER    shift, and go to state 1
     ID        shift, and go to state 2
@@ -851,26 +844,45 @@ State 70
 
 State 71
 
-   18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist • RCBRACKET
+   10 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET • stmlist RCBRACKET
 
-    RCBRACKET  shift, and go to state 73
+    NUMBER    shift, and go to state 1
+    ID        shift, and go to state 2
+    LPAREN    shift, and go to state 3
+    IF        shift, and go to state 4
+    WHILE     shift, and go to state 5
+    FUNCTION  shift, and go to state 6
+
+    stmlist    go to state 73
+    stm        go to state 9
+    varlist    go to state 10
+    decl       go to state 11
+    func_decl  go to state 12
+    expr       go to state 13
 
 
 State 72
 
-   10 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist • RCBRACKET
+   18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist • RCBRACKET
 
     RCBRACKET  shift, and go to state 74
 
 
 State 73
 
+   10 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist • RCBRACKET
+
+    RCBRACKET  shift, and go to state 75
+
+
+State 74
+
    18 func_decl: FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET •
 
     $default  reduce using rule 18 (func_decl)
 
 
-State 74
+State 75
 
    10 stm: IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET •
 

@@ -85,7 +85,8 @@ extern int yydebug;
     SLASH = 286,                   /* SLASH  */
     INCREMENT = 287,               /* INCREMENT  */
     DECREMENT = 288,               /* DECREMENT  */
-    MULTIPLY = 289                 /* MULTIPLY  */
+    MULTIPLY = 289,                /* MULTIPLY  */
+    FLOAT = 290                    /* FLOAT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -98,7 +99,7 @@ union YYSTYPE
 
   char *sValue; /* Para valores do tipo string */
 
-#line 102 "y.tab.h"
+#line 103 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

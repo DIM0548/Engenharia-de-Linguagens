@@ -20,6 +20,7 @@
 "function"            { return FUNCTION; }
 "return"              { return RETURN; }
 "int"                 { return INTEGER; }
+"float"               { return FLOAT; }
 "."                   { return DOT; }
 ","                   { return COMMA; }
 ":"                   { return COLON; }

@@ -22,25 +22,42 @@ STM
 PROG
 
 Rodando no arquivo: input04.txt
-
-Rodando no arquivo: input05.txt
-
-Rodando no arquivo: input06.txt
-a := b
-STM
-WHILE statement
-b := c
-d := e
-STM
-STM-STMLIST
-WHILE statement
-e := f
-a := z
-z := w
+a, b, c := x
+a[], b[], c[][] := x
+a, b, c[][] := x
+a[], b, c := x
+Declaration: a, b, c : int
 STM
 STM-STMLIST
 STM-STMLIST
 STM-STMLIST
 STM-STMLIST
 PROG
+
+Rodando no arquivo: input05.txt
+a := b
+b := c
+d := e
+STM
+STM-STMLIST
+WHILE statement
+e := f
+STM
+STM-STMLIST
+STM-STMLIST
+WHILE statement
+a := z
+z := w
+STM
+STM-STMLIST
+STM-STMLIST
+PROG
+
+Rodando no arquivo: input06.txt
+Parameter a of type int
+Parameter b of type int
+Parameter c of type float
+Single parameter
+Parameter list
+Parameter list
 

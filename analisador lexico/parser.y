@@ -21,6 +21,7 @@ extern char *yytext;
 %token GT LT GTEQ LTEQ EQ AND OR PLUS MINUS SLASH
 %token INCREMENT DECREMENT
 %token MULTIPLY
+%token FLOAT
 
 %type <sValue> param type expr varlist decl
 
@@ -118,8 +119,10 @@ param:
 
 type:
   INTEGER { $$ = strdup("int"); }
+  | FLOAT { $$ = strdup("float"); }
   | INTEGER LBRACKET RBRACKET { $$ = strdup("int[]"); }
 ;
+
 
 expr:
     ID                          { $$ = strdup($1); }
