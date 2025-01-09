@@ -40,11 +40,6 @@ Parameter b of type int
 Parameter c of type float
 Function soma defined
 FUNCTION DECL
-Procedure exiba defined
-FUNCTION DECL
-STM
-STM-STMLIST
-PROG
 
 Rodando no arquivo: input06.txt
 a := b
@@ -64,4 +59,7 @@ STM
 STM-STMLIST
 STM-STMLIST
 PROG
+
+Rodando no arquivo: input07.txt
+Parameter arr of type int[]
 
