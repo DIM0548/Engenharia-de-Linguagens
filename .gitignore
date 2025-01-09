@@ -1,9 +1,19 @@
+
+# LAX Files
+*.yy.c
+
+# YACC/BISON Files
+*.output
+*.gv
 *.tab.c
 *.tab.h
 
-*.yy.c
+# Compiled Files
+*.o
+*.out
+*.exe
+*.a
 
-*/compiler
-*/compiler.exe
-*/y.output
-*.gv
+# Build Directories
+build/
+saida/
