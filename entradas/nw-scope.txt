@@ -1,10 +1,4 @@
-function soma(a : int, b : int, c : float): int {
-
+function soma (a: int, b: int): int {
+    return a + b;
 }
-
-procedure exiba() {
-
-}
-
-{
-}
+int = soma(3, 5);

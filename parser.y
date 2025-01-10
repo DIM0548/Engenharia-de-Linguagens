@@ -10,7 +10,7 @@ extern char *yytext;
 %}
 
 %union {
-  char *sValue; /* Para valores do tipo string */
+  char *sValue;
 }
 
 %token <sValue> NUMBER ID
@@ -23,92 +23,51 @@ extern char *yytext;
 %token INCREMENT DECREMENT
 %token MULTIPLY
 %token FLOAT
-/* %token PROCEDURE */
 
-%type <sValue> param type expr varlist decl
+%type <sValue> param type expr varlist decl stmlist stm program
 
 %start program
 
 %left PLUS MINUS
-%left SLASH
-%left MULTIPLY
-%left LPAREN RPAREN
+%left SLASH MULTIPLY
 
 %%
 
 program:
-  stmlist { printf("PROG\n"); }
+    stmlist { printf("PROG\n"); }
 ;
 
 stmlist:
-  stm { printf("STM\n"); }
+    stm { printf("STM\n"); }
   | stm stmlist { printf("STM-STMLIST\n"); }
 ;
 
 stm:
     func_decl { printf("FUNCTION DECL\n"); }
-  | varlist ASSIGNMENT expr SEMICOLON { 
-        printf("%s := %s\n", $1, $3); 
-        free($1); free($3); 
-    }
-  | decl SEMICOLON {
-        printf("Declaration: %s\n", $1);
-        free($1);
-    }
-  | expr SEMICOLON { 
-        free($1); 
-    }
-  | WHILE LCBRACKET stmlist RCBRACKET { 
-        printf("WHILE statement\n"); 
-    }
-  | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET { 
-        printf("IF statement\n"); 
+  | WHILE LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET { printf("WHILE statement\n"); free($3); }
+  | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET { printf("IF statement\n"); free($3); }
+  | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET {
+        printf("IF-ELSE statement\n");
         free($3);
     }
-  | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET { 
-        printf("IF-ELSE statement\n"); 
-        free($3);
-    }
+  | decl SEMICOLON { printf("Variable Declaration\n"); free($1); }
 ;
 
 varlist:
     ID { $$ = strdup($1); }
-  | varlist COMMA ID { 
-        asprintf(&$$, "%s, %s", $1, $3); 
-        free($1); free($3); 
-    }
-  | varlist COMMA ID LBRACKET RBRACKET { 
-        asprintf(&$$, "%s, %s[]", $1, $3); 
-        free($1); free($3); 
-    }
-  | varlist COMMA ID LBRACKET RBRACKET LBRACKET RBRACKET { 
-        asprintf(&$$, "%s, %s[][]", $1, $3); 
-        free($1); free($3); 
-    }
-  | ID LBRACKET RBRACKET { 
-        asprintf(&$$, "%s[]", $1); 
-        free($1); 
-    }
-  | ID LBRACKET RBRACKET LBRACKET RBRACKET { 
-        asprintf(&$$, "%s[][]", $1); 
-        free($1); 
-    }
+  | varlist COMMA ID { asprintf(&$$, "%s, %s", $1, $3); free($1); free($3); }
 ;
 
 decl:
-    varlist COLON type { 
-        asprintf(&$$, "%s : %s", $1, $3); 
-        free($1); free($3); 
-    }
+    varlist COLON type { asprintf(&$$, "%s : %s", $1, $3); free($1); free($3); }
 ;
 
 func_decl:
-    FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET
-    | FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET RCBRACKET { printf("Function %s defined\n", $2); free($2); }
-    /* | PROCEDURE ID LPAREN RPAREN LCBRACKET stmlist RCBRACKET
-    | PROCEDURE ID LPAREN RPAREN LCBRACKET RCBRACKET { printf("Procedure %s defined\n", $2); free($2); } */
+    FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET {
+        printf("Function %s returning %s defined\n", $2, $7);
+        free($2); free($7);
+    }
 ;
-
 
 param_list:
     /* vazio */
@@ -117,44 +76,36 @@ param_list:
 ;
 
 param:
-  ID COLON type { printf("Parameter %s of type %s\n", $1, $3); free($1); free($3); }
+    ID COLON type { printf("Parameter %s of type %s\n", $1, $3); free($1); free($3); }
 ;
 
 type:
-  INTEGER { $$ = strdup("int"); }
-  | INTEGER LBRACKET RBRACKET { $$ = strdup("int[]"); }
-  | FLOAT   { $$ = strdup("float"); }
+    INTEGER                    { $$ = strdup("int"); }
+  | INTEGER LBRACKET RBRACKET  { $$ = strdup("int[]"); }
+  | FLOAT                      { $$ = strdup("float"); }
 ;
 
 expr:
     ID                          { $$ = strdup($1); }
+  | ID DOT ID LPAREN expr RPAREN {
+        asprintf(&$$, "%s.%s(%s)", $1, $3, $5);
+        free($1); free($3); free($5);
+    }
   | NUMBER                      { $$ = strdup($1); }
-  | expr PLUS expr              { 
-        asprintf(&$$, "(%s + %s)", $1, $3); 
-        free($1); free($3); 
-    }
-  | expr MINUS expr             { 
-        asprintf(&$$, "(%s - %s)", $1, $3); 
-        free($1); free($3); 
-    }
-  | expr MULTIPLY expr          { 
-        asprintf(&$$, "(%s * %s)", $1, $3); 
-        free($1); free($3); 
-    }
-  | expr SLASH expr             { 
-        asprintf(&$$, "(%s / %s)", $1, $3); 
-        free($1); free($3); 
-    }
+  | expr PLUS expr              { asprintf(&$$, "(%s + %s)", $1, $3); free($1); free($3); }
+  | expr MINUS expr             { asprintf(&$$, "(%s - %s)", $1, $3); free($1); free($3); }
+  | expr MULTIPLY expr          { asprintf(&$$, "(%s * %s)", $1, $3); free($1); free($3); }
+  | expr SLASH expr             { asprintf(&$$, "(%s / %s)", $1, $3); free($1); free($3); }
   | LPAREN expr RPAREN          { $$ = $2; }
 ;
 
 %%
 
 int main(void) {
-  return yyparse();
+    return yyparse();
 }
 
 int yyerror(char *msg) {
-  fprintf(stderr, "%d: %s at '%s'\n", yylineno, msg, yytext);
-  return 0;
+    fprintf(stderr, "%d: %s at '%s'\n", yylineno, msg, yytext);
+    return 0;
 }
