@@ -1,0 +1,29 @@
+PROCEDURE OR FUNCTION main () { // TODO: Resolver se o main vai ser um procedure (uma método sem retorno) ou uma função (um método com retorno mas retorna void)
+    range0_25: int = 0;
+    range26_50: int = 0;
+    range51_75: int = 0;
+    range76_100: int = 0;
+
+    while (true) {
+        print("Digite um número: ");
+        num: int = readInt(); // TODO: decidir como vai ser a leitura de coisas do teclado
+        
+        if (num < 0) {  
+            break;
+        } else if (num <= 25) {
+            range0_25++;
+        } else if (num <= 50) {
+            range26_50++;
+        } else if (num <= 75) {
+            range51_75++;
+        } else {
+            range76_100++;
+        }
+    }
+
+
+    print("Quantidade de números no intervalo [0, 25]: ",   range0_25, "\n");
+    print("Quantidade de números no intervalo [26, 50]: ",  range26_50, "\n");
+    print("Quantidade de números no intervalo [51, 75]: ",  range51_75, "\n");
+    print("Quantidade de números no intervalo [76, 100]: ", range76_100, "\n");
+}

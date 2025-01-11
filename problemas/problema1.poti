@@ -1,0 +1,7 @@
+PROCEDURE OR FUNCTION main () { // TODO: Resolver se o main vai ser um procedure (uma método sem retorno) ou uma função (um método com retorno mas retorna void)
+    x: float = 2.0;
+    y: float = 3.0;
+    c: int   = 4;
+
+    print("Resultado: ", x^2 - y + c);
+}

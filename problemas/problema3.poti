@@ -1,0 +1,60 @@
+PROCEDURE OR FUNCTION main () { // TODO: Resolver se o main vai ser um procedure (uma método sem retorno) ou uma função (um método com retorno mas retorna void)
+    //LEITURA DA M1
+    print("Digite a altura da primeira matriz: ");
+    h1: int = readInt();
+    print("Digite a largura da primeira matriz: ");
+    w1: int = readInt();
+    m1: int[h1][w1];
+    for i: int = 0 to h1-1 {  // TODO: Resolver como vai ser a estrutura do for
+        for j: int = 0 to w1-1 {
+            print("(", i,", ", j,"):\n");
+            m1[i][j] = readInt();
+        }
+    }
+
+    //LEITURA DA M2
+    print("Digite a altura da segunda matriz: ");
+    h2: int = readInt();
+    print("Digite a largura da segunda matriz: ");
+    w2: int = readInt();
+    m2: int[h2][w2];
+    for i: int = 0 to h2-1 {
+        for j: int = 0 to w2-1 {
+            print("(", i,", ", j,"):\n");
+            m2[i][j] = readInt();
+        }
+    }
+
+    //SOMA
+    if (m1.size == m2.size && m1[0].size == m2[0].size) { 
+        mSoma: int[w1][h1]
+        print("Matriz soma:\n");
+        for i: int = 0 to h1-1 {
+            for j: int = 0 to w1-1 {
+                mSoma[i][j] = m1[i][j] + m2[i][j];
+                print(mSoma[i][j], " ");
+            }
+            print("\n");
+        }
+    } else {
+        print("Não é possível somar as matrizes\n");
+    }
+
+    // MULTIPLICAÇÃO
+    if (w1 == h2) {
+        mMulti: int[h1][w2];
+        print("Matriz multiplicação:\n");
+        for i: int = 0 to h1-1 {
+            for j: int = 0 to w2-1 {
+                mMulti[i][j] = 0;
+                for k: int = 0 to w1-1 {
+                    mMulti[i][j] = mMulti[i][j] + m1[i][k] * m2[k][j];
+                }
+                print(mMulti[i][j], " ");
+            }
+            print("\n");
+        }
+    } else {
+        print("Não é possível multiplicar as matrizes\n");
+    }
+}
