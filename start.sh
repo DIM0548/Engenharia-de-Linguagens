@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Diretórios
-ENTRADAS_DIR="./entradas"
+ENTRADAS_DIR="./problemas"
 SAIDA_DIR="./saida"
 BUILD_DIR="./build"
 BUILD_LEX="$BUILD_DIR/lex"
@@ -65,7 +65,7 @@ if [ -f y.gv ]; then
 fi
 
 # Processamento dos arquivos de entrada
-for arquivo in "$ENTRADAS_DIR"/*.txt; do
+for arquivo in "$ENTRADAS_DIR"/*.poti; do
     if [ -f "$arquivo" ]; then
         nome_arquivo=$(basename "$arquivo")
         resultado_arquivo="$SAIDA_DIR/${nome_arquivo%.txt}_resultado.txt"
