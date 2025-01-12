@@ -1,4 +1,4 @@
-PROCEDURE OR FUNCTION main () { // TODO: Resolver se o main vai ser um procedure (uma método sem retorno) ou uma função (um método com retorno mas retorna void)
+function main (): void { // TODO: Resolver se o main vai ser um procedure (uma método sem retorno) ou uma função (um método com retorno mas retorna void)
     //LEITURA DA M1
     print("Digite a altura da primeira matriz: ");
     h1: int = readInt();

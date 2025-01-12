@@ -1,4 +1,4 @@
-PROCEDURE OR FUNCTION main () { // TODO: Resolver se o main vai ser um procedure (uma método sem retorno) ou uma função (um método com retorno mas retorna void)
+function main (): void { // TODO: Resolver se o main vai ser um procedure (uma método sem retorno) ou uma função (um método com retorno mas retorna void)
     range0_25: int = 0;
     range26_50: int = 0;
     range51_75: int = 0;
@@ -22,7 +22,7 @@ PROCEDURE OR FUNCTION main () { // TODO: Resolver se o main vai ser um procedure
     }
 
 
-    print("Quantidade de números no intervalo [0, 25]: ",   range0_25, "\n");
+    print("Quantidade de números no intervalo [0, 25]: ",   range0_25, "\n"); //TODO: vamos ter um println ou print com quebra de linha?
     print("Quantidade de números no intervalo [26, 50]: ",  range26_50, "\n");
     print("Quantidade de números no intervalo [51, 75]: ",  range51_75, "\n");
     print("Quantidade de números no intervalo [76, 100]: ", range76_100, "\n");
