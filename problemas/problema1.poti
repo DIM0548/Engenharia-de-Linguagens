@@ -3,5 +3,5 @@ function main (): void { // TODO: Resolver se o main vai ser um procedure (uma m
     y: float = 3.0;
     c: int   = 4;
 
-    print("Resultado: ", x^2 - y + c); // TODO: Resolver como vai ser a impressão de coisas na tela
+    log("Resultado: ", x^2 - y + c); // TODO: Resolver como vai ser a impressão de coisas na tela
 }

@@ -7,8 +7,9 @@
 
 [ \t\n\r]               ;
 "//"[^\n]*              ;
-"/"([^]|\+[^/])\+"/"    ;
-[0-9]+                  { yylval.sValue = strdup(yytext); return NUMBER; }
+"/"([^]|\+[^/])+"/"     ;
+[0-9]+(\.[0-9]+)?       { yylval.sValue = strdup(yytext); return NUMBER; }
+\"([^\\\"]|\\.)*\"      { yylval.sValue = strdup(yytext); return STRING; }
 "{"                     { return LCBRACKET; }
 "}"                     { return RCBRACKET; }
 "("                     { return LPAREN; }
@@ -39,8 +40,10 @@
 "-"                     { return MINUS; }
 "++"                    { return INCREMENT; }
 "--"                    { return DECREMENT; }
+"^"                     { return POWER; }
 "/"                     { return SLASH; }
 "*"                     { return MULTIPLY; }
+"void"                  { return VOID; }
 [a-zA-Z][a-zA-Z0-9]*    { yylval.sValue = strdup(yytext); return ID; }
 .                       { printf("Invalid character at line %d: '%s' (ASCII %d)\n", yylineno, yytext, yytext[0]); }
 

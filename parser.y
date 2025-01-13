@@ -14,36 +14,35 @@ extern char *yytext;
 }
 
 %token <sValue> NUMBER ID
-%token <sValue> INTEGER
-%token <sValue> FUNCTION
+%token <sValue> INTEGER FLOAT VOID
 %token LCBRACKET RCBRACKET LPAREN RPAREN LBRACKET RBRACKET
-%token IF ELSE WHILE RETURN
+%token IF ELSE WHILE RETURN FUNCTION
 %token DOT COMMA COLON SEMICOLON ASSIGNMENT
-%token GT LT GTEQ LTEQ EQ AND OR PLUS MINUS SLASH
+%token GT LT GTEQ LTEQ EQ AND OR PLUS MINUS SLASH MULTIPLY POWER
 %token INCREMENT DECREMENT
-%token MULTIPLY
-%token FLOAT
+%token STRING
 
-%type <sValue> param type expr varlist decl stmlist stm program
+%type <sValue> param type expr varlist decl stmlist stm program arg_list
 
 %start program
 
 %left PLUS MINUS
 %left SLASH MULTIPLY
+%right POWER
 
 %%
 
 program:
-    stmlist { printf("PROG\n"); }
+    stmlist { printf("Program Parsed Successfully\n"); }
 ;
 
 stmlist:
-    stm { printf("STM\n"); }
-  | stm stmlist { printf("STM-STMLIST\n"); }
+    stm
+  | stm stmlist
 ;
 
 stm:
-    func_decl { printf("FUNCTION DECL\n"); }
+    func_decl
   | WHILE LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET { printf("WHILE statement\n"); free($3); }
   | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET { printf("IF statement\n"); free($3); }
   | IF LPAREN expr RPAREN LCBRACKET stmlist RCBRACKET ELSE LCBRACKET stmlist RCBRACKET {
@@ -51,6 +50,15 @@ stm:
         free($3);
     }
   | decl SEMICOLON { printf("Variable Declaration\n"); free($1); }
+  | ID ASSIGNMENT expr SEMICOLON { printf("Assignment statement\n"); free($1); free($3); }
+  | ID LPAREN expr RPAREN SEMICOLON {
+        if (strcmp($1, "log") == 0) {
+            printf("Log statement: Printing %s\n", $3);
+        } else {
+            printf("Function call: %s(%s)\n", $1, $3);
+        }
+        free($1); free($3);
+    }
 ;
 
 varlist:
@@ -59,13 +67,18 @@ varlist:
 ;
 
 decl:
-    varlist COLON type { asprintf(&$$, "%s : %s", $1, $3); free($1); free($3); }
+    varlist COLON type                        { asprintf(&$$, "%s : %s", $1, $3); free($1); free($3); }
+  | varlist COLON type ASSIGNMENT expr        { asprintf(&$$, "%s : %s = %s", $1, $3, $5); free($1); free($3); free($5); }
 ;
 
 func_decl:
     FUNCTION ID LPAREN param_list RPAREN COLON type LCBRACKET stmlist RCBRACKET {
         printf("Function %s returning %s defined\n", $2, $7);
         free($2); free($7);
+    }
+  | FUNCTION ID LPAREN param_list RPAREN COLON VOID LCBRACKET stmlist RCBRACKET {
+        printf("Procedure %s with no return defined\n", $2);
+        free($2);
     }
 ;
 
@@ -83,20 +96,36 @@ type:
     INTEGER                    { $$ = strdup("int"); }
   | INTEGER LBRACKET RBRACKET  { $$ = strdup("int[]"); }
   | FLOAT                      { $$ = strdup("float"); }
+  | VOID                       { $$ = strdup("void"); }
 ;
 
 expr:
     ID                          { $$ = strdup($1); }
-  | ID DOT ID LPAREN expr RPAREN {
-        asprintf(&$$, "%s.%s(%s)", $1, $3, $5);
-        free($1); free($3); free($5);
+  | ID LPAREN arg_list RPAREN   { 
+        if (strcmp($1, "log") == 0) {
+            printf("Log statement: %s\n", $3);
+        } else {
+            printf("Function call: %s(%s)\n", $1, $3);
+        }
+        free($1); free($3);
     }
   | NUMBER                      { $$ = strdup($1); }
   | expr PLUS expr              { asprintf(&$$, "(%s + %s)", $1, $3); free($1); free($3); }
   | expr MINUS expr             { asprintf(&$$, "(%s - %s)", $1, $3); free($1); free($3); }
   | expr MULTIPLY expr          { asprintf(&$$, "(%s * %s)", $1, $3); free($1); free($3); }
   | expr SLASH expr             { asprintf(&$$, "(%s / %s)", $1, $3); free($1); free($3); }
+  | expr POWER expr             { asprintf(&$$, "(%s ^ %s)", $1, $3); free($1); free($3); }
+  | expr INCREMENT              { asprintf(&$$, "(%s++)", $1); free($1); }
+  | expr DECREMENT              { asprintf(&$$, "(%s--)", $1); free($1); }
   | LPAREN expr RPAREN          { $$ = $2; }
+;
+
+arg_list:
+    expr                        { $$ = strdup($1); }
+  | arg_list COMMA expr         { 
+        asprintf(&$$, "%s, %s", $1, $3);
+        free($1); free($3);
+    }
 ;
 
 %%
