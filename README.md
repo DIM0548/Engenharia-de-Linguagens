@@ -85,7 +85,7 @@ Para executar este projeto, os seguintes programas devem estar instalados no sis
 
 ## 📝 Autores
 
-- **Ianco** - [ianco-so](https://github.com/ianco-so)
-- **João** - [jv]()
-- **Allyson** - [allyson]()
-- **Edivânia** - [edivania]()
+- **Allyson G. S. Carmo** - [AllysonGustavo1](https://github.com/AllysonGustavo1)
+- **Edivânia P. Oliveira** - [edivaniap](https://github.com/edivaniap)
+- **Ianco S. Oliveira** - [ianco-so](https://github.com/ianco-so)
+- **João V. S. Saturnino** - [jv]()
