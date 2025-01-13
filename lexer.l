@@ -1,15 +1,22 @@
 %{
-#include <stdio.h>
-#include "y.tab.h"
+   #include <stdio.h>
+   #include "y.tab.h"
+
+   int count_lines = 0;
 %}
+%option yylineno
+
+alpha             [a-zA-Z]
+digit             [0-9]
+
+intLiteral        [-+]?{digit}+
+floatLiteral      {intLiteral}"."{digit}+
+stringLiteral     \"[^\n"]+\"
+charLiteral       \'[^\\']\'
+identifier        {alpha}({alpha}|{digit})*
 
 %%
 
-[ \t\n\r]               ;
-"//"[^\n]*              ;
-"/"([^]|\+[^/])+"/"     ;
-[0-9]+(\.[0-9]+)?       { yylval.sValue = strdup(yytext); return NUMBER; }
-\"([^\\\"]|\\.)*\"      { yylval.sValue = strdup(yytext); return STRING; }
 "{"                     { return LCBRACKET; }
 "}"                     { return RCBRACKET; }
 "("                     { return LPAREN; }
@@ -22,7 +29,7 @@
 "function"              { return FUNCTION; }
 "return"                { return RETURN; }
 "int"                   { return INTEGER; }
-"int\\[\\]"             { return INTEGER; }
+"int\\[\\]"             { return INTEGER; } // O que é isso?
 "float"                 { return FLOAT; }
 "."                     { return DOT; }
 ","                     { return COMMA; }
@@ -43,8 +50,16 @@
 "^"                     { return POWER; }
 "/"                     { return SLASH; }
 "*"                     { return MULTIPLY; }
-"void"                  { return VOID; }
-[a-zA-Z][a-zA-Z0-9]*    { yylval.sValue = strdup(yytext); return ID; }
+{intLiteral}            { yylval.sValue = strdup(yytext); return INT_LITERAL; }
+{floatLiteral}          { yylval.sValue = strdup(yytext); return FLOAT_LITERAL; }
+{stringLiteral}         { yylval.sValue = strdup(yytext); return STRING_LITERAL; }
+{charLiteral}           { yylval.sValue = strdup(yytext); return CHAR_LITERAL; }
+{identifier}            { yylval.sValue = strdup(yytext); return ID; }
+"//"[^\n]*              ; // Single line comment
+"/"([^]|\+[^/])\+"/"    ; // Multi line comment
+[ \t\r]*                ; // Ignora espaços em branco
+[\n]                    { countn++; } // Conta quebra de linha, como está ignorando comentários eles não são contados (não sei se isso é bom)
+
 .                       { printf("Invalid character at line %d: '%s' (ASCII %d)\n", yylineno, yytext, yytext[0]); }
 
 %%

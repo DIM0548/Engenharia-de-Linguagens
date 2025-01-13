@@ -13,14 +13,15 @@ extern char *yytext;
   char *sValue;
 }
 
-%token <sValue> NUMBER ID
-%token <sValue> INTEGER FLOAT VOID
+%token <sValue> ID INT_LITERAL  FLOAT_LITERAL STRING_LITERAL CHAR_LITERAL
+%token <sValue> INTEGER
+%token <sValue> FUNCTION
 %token LCBRACKET RCBRACKET LPAREN RPAREN LBRACKET RBRACKET
-%token IF ELSE WHILE RETURN FUNCTION
+%token IF ELSE WHILE RETURN
 %token DOT COMMA COLON SEMICOLON ASSIGNMENT
 %token GT LT GTEQ LTEQ EQ AND OR PLUS MINUS SLASH MULTIPLY POWER
 %token INCREMENT DECREMENT
-%token STRING
+%token STRING FLOAT VOID
 
 %type <sValue> param type expr varlist decl stmlist stm program arg_list
 
@@ -113,7 +114,7 @@ expr:
         }
         free($1); free($3);
     }
-  | NUMBER                      { $$ = strdup($1); }
+  | INT_LITERAL                      { $$ = strdup($1); }
   | expr PLUS expr              { asprintf(&$$, "(%s + %s)", $1, $3); free($1); free($3); }
   | expr MINUS expr             { asprintf(&$$, "(%s - %s)", $1, $3); free($1); free($3); }
   | expr MULTIPLY expr          { asprintf(&$$, "(%s * %s)", $1, $3); free($1); free($3); }
