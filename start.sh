@@ -68,12 +68,14 @@ fi
 for arquivo in "$ENTRADAS_DIR"/*.poti; do
     if [ -f "$arquivo" ]; then
         nome_arquivo=$(basename "$arquivo")
-        resultado_arquivo="$SAIDA_DIR/${nome_arquivo%.txt}_resultado.txt"
+        resultado_arquivo="$SAIDA_DIR/${nome_arquivo}_resultado.txt"
+
 
         echo "Rodando no arquivo: $nome_arquivo" >> "$RESULTADO"
 
-        # Executa o compilador e salva o resultado do arquivo individual
-        if "$BUILD_DIR/compiler" < "$arquivo" > "$resultado_arquivo" 2>> "$resultado_arquivo"; then
+        # Executa o compilador e redireciona stdout e stderr para o arquivo individual de resultado
+        if "$BUILD_DIR/compiler" < "$arquivo" > "$resultado_arquivo" 2>&1; then
+            echo "Arquivo $nome_arquivo processado com sucesso." >> "$RESULTADO"
             cat "$resultado_arquivo" >> "$RESULTADO"
         else
             echo "Erro ao processar o arquivo $nome_arquivo. Consulte $resultado_arquivo para detalhes." >> "$RESULTADO"
@@ -82,6 +84,13 @@ for arquivo in "$ENTRADAS_DIR"/*.poti; do
         echo "" >> "$RESULTADO"
     else
         echo "Nenhum arquivo encontrado em $ENTRADAS_DIR."
+    fi
+done
+
+# Verifica se os arquivos de saída não estão vazios
+for resultado in "$SAIDA_DIR"/*_resultado.txt; do
+    if [ -f "$resultado" ] && [ ! -s "$resultado" ]; then
+        echo "O arquivo $resultado está vazio. Verifique possíveis problemas no processamento."
     fi
 done
 
