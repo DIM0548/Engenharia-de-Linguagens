@@ -11,7 +11,7 @@ digit             [0-9]
 
 intLiteral        [-+]?{digit}+
 floatLiteral      {intLiteral}"."{digit}+
-stringLiteral     \"[^\n"]+\"
+stringLiteral     \"[^\n\"]+\"
 charLiteral       \'[^\\']\'
 identifier        {alpha}({alpha}|{digit})*
 
@@ -29,8 +29,8 @@ identifier        {alpha}({alpha}|{digit})*
 "function"              { return FUNCTION; }
 "return"                { return RETURN; }
 "int"                   { return INTEGER; }
-"int\\[\\]"             { return INTEGER; } // O que é isso?
 "float"                 { return FLOAT; }
+"void"                  { return VOID; }
 "."                     { return DOT; }
 ","                     { return COMMA; }
 ":"                     { return COLON; }
@@ -50,6 +50,7 @@ identifier        {alpha}({alpha}|{digit})*
 "^"                     { return POWER; }
 "/"                     { return SLASH; }
 "*"                     { return MULTIPLY; }
+"log"                   { return LOG; }
 {intLiteral}            { yylval.sValue = strdup(yytext); return INT_LITERAL; }
 {floatLiteral}          { yylval.sValue = strdup(yytext); return FLOAT_LITERAL; }
 {stringLiteral}         { yylval.sValue = strdup(yytext); return STRING_LITERAL; }
@@ -58,8 +59,7 @@ identifier        {alpha}({alpha}|{digit})*
 "//"[^\n]*              ; // Single line comment
 "/"([^]|\+[^/])\+"/"    ; // Multi line comment
 [ \t\r]*                ; // Ignora espaços em branco
-[\n]                    { countn++; } // Conta quebra de linha, como está ignorando comentários eles não são contados (não sei se isso é bom)
-
+[\n]                    { count_lines++; } // Conta quebra de linha
 .                       { printf("Invalid character at line %d: '%s' (ASCII %d)\n", yylineno, yytext, yytext[0]); }
 
 %%

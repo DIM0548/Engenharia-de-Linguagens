@@ -16,6 +16,7 @@ extern char *yytext;
 %token <sValue> ID INT_LITERAL  FLOAT_LITERAL STRING_LITERAL CHAR_LITERAL
 %token <sValue> INTEGER
 %token <sValue> FUNCTION
+%token LOG
 %token LCBRACKET RCBRACKET LPAREN RPAREN LBRACKET RBRACKET
 %token IF ELSE WHILE RETURN
 %token DOT COMMA COLON SEMICOLON ASSIGNMENT
@@ -52,15 +53,7 @@ stm:
     }
   | decl SEMICOLON { printf("Variable Declaration\n"); free($1); }
   | ID ASSIGNMENT expr SEMICOLON { printf("Assignment statement\n"); free($1); free($3); }
-  | ID LPAREN arg_list RPAREN SEMICOLON {
-        if (strcmp($1, "log") == 0) {
-            printf("Log statement: Printing %s\n", $3);
-        } else {
-            printf("Function call: %s(%s)\n", $1, $3);
-        }
-        free($1); free($3);
-    }
-  | "log" LPAREN arg_list RPAREN SEMICOLON {
+  | LOG LPAREN arg_list RPAREN SEMICOLON {
         printf("Log statement: Printing %s\n", $3);
         free($3);
     }
@@ -106,15 +99,8 @@ type:
 
 expr:
     ID                          { $$ = strdup($1); }
-  | ID LPAREN arg_list RPAREN   { 
-        if (strcmp($1, "log") == 0) {
-            printf("Log statement: %s\n", $3);
-        } else {
-            printf("Function call: %s(%s)\n", $1, $3);
-        }
-        free($1); free($3);
-    }
-  | INT_LITERAL                      { $$ = strdup($1); }
+  | FLOAT_LITERAL               { $$ = strdup($1); }
+  | INT_LITERAL                 { $$ = strdup($1); }
   | expr PLUS expr              { asprintf(&$$, "(%s + %s)", $1, $3); free($1); free($3); }
   | expr MINUS expr             { asprintf(&$$, "(%s - %s)", $1, $3); free($1); free($3); }
   | expr MULTIPLY expr          { asprintf(&$$, "(%s * %s)", $1, $3); free($1); free($3); }
@@ -131,7 +117,9 @@ arg_list:
         asprintf(&$$, "%s, %s", $1, $3);
         free($1); free($3);
     }
+  | STRING_LITERAL             { $$ = strdup($1); }
 ;
+
 
 %%
 
