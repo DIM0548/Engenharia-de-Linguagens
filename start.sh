@@ -31,7 +31,7 @@ if ! bison parser.y -o y.tab.c -d -v -g; then
 fi
 
 # Compila o executável do compilador
-if ! gcc lex.yy.c y.tab.c -o "$BUILD_DIR/compiler"; then
+if ! gcc lex.yy.c y.tab.c ./lib/check.c -o "$BUILD_DIR/compiler"; then
     echo "Erro ao compilar o compilador. Verifique o código fonte."
     exit 1
 fi

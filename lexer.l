@@ -28,7 +28,7 @@ identifier        {alpha}({alpha}|{digit})*
 "while"                 { return WHILE; }
 "function"              { return FUNCTION; }
 "return"                { return RETURN; }
-"int"                   { return INTEGER; }
+"int"                   { return INT; }
 "float"                 { return FLOAT; }
 "void"                  { return VOID; }
 "."                     { return DOT; }

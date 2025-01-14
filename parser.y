@@ -1,41 +1,51 @@
 %{
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
 
-int yylex(void);
-int yyerror(char *s);
-extern int yylineno;
-extern char *yytext;
+  #include "./lib/check.h"
+
+  int yylex(void);
+  int yyerror(char *s);
+  extern int yylineno;
+  extern char *yytext;
 %}
 
 %union {
   char *sValue;
 }
+// TERMINALS
+%token <sValue> ID                                                          // IDENTIFIER
+%token <sValue> INT_LITERAL FLOAT_LITERAL STRING_LITERAL CHAR_LITERAL       // LITERALS
+%token <sValue> FUNCTION                                                    // FUNCTION
+%token LOG                                                                  // LOG and PRINT
+%token LCBRACKET RCBRACKET LPAREN RPAREN LBRACKET RBRACKET                  // BRACKETS AND PARENTHESES
+%token IF ELSE WHILE RETURN                                                 // CONTROL FLOW         
+%token DOT COMMA COLON SEMICOLON                                            // PUNCTUATION
+%token GT LT GTEQ LTEQ EQ AND OR                                            // RELATIONAL OPERATORS (GREATER, LESS, GREATER OR EQUAL, LESS OR EQUAL, EQUAL, AND, OR)
+%token PLUS MINUS SLASH MULTIPLY POWER ASSIGNMENT                           // BINARY OPERATORS and ASSIGNMENT
+%token INCREMENT DECREMENT                                                  // UNARY OPERATORS
+%token STRING FLOAT VOID INT                                                // TYPES
 
-%token <sValue> ID INT_LITERAL  FLOAT_LITERAL STRING_LITERAL CHAR_LITERAL
-%token <sValue> INTEGER
-%token <sValue> FUNCTION
-%token LOG
-%token LCBRACKET RCBRACKET LPAREN RPAREN LBRACKET RBRACKET
-%token IF ELSE WHILE RETURN
-%token DOT COMMA COLON SEMICOLON ASSIGNMENT
-%token GT LT GTEQ LTEQ EQ AND OR PLUS MINUS SLASH MULTIPLY POWER
-%token INCREMENT DECREMENT
-%token STRING FLOAT VOID
 
+// NON-TERMINALS
 %type <sValue> param type expr varlist decl stmlist stm program arg_list
 
-%start program
 
+// OPERATOR PRECEDENCE
 %left PLUS MINUS
 %left SLASH MULTIPLY
 %right POWER
 
+// START SYMBOL
+%start program
 %%
 
 program:
-    stmlist { printf("Program Parsed Successfully\n"); }
+  stmlist { 
+    check_main();  
+    printf("Program Parsed Successfully\n"); 
+  }
 ;
 
 stmlist:
@@ -91,8 +101,8 @@ param:
 ;
 
 type:
-    INTEGER                    { $$ = strdup("int"); }
-  | INTEGER LBRACKET RBRACKET  { $$ = strdup("int[]"); }
+    INT                    { $$ = strdup("int"); }
+  | INT LBRACKET RBRACKET  { $$ = strdup("int[]"); } // TODO: Implementar arrays
   | FLOAT                      { $$ = strdup("float"); }
   | VOID                       { $$ = strdup("void"); }
 ;
