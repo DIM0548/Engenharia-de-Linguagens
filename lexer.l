@@ -9,20 +9,26 @@
 alpha             [a-zA-Z]
 digit             [0-9]
 
+
 intLiteral        [-+]?{digit}+
 floatLiteral      {intLiteral}"."{digit}+
 stringLiteral     \"[^\n\"]+\"
 charLiteral       \'[^\\']\'
-identifier        {alpha}({alpha}|{digit})*
+identifier        {alpha}({alpha}|{digit}|_)*
 
 %%
 
-"{"                     { return LCBRACKET; }
-"}"                     { return RCBRACKET; }
-"("                     { return LPAREN; }
-")"                     { return RPAREN; }
-"["                     { return LBRACKET; }
-"]"                     { return RBRACKET; }
+"{"                     { return yytext[0]; }
+"}"                     { return yytext[0]; }
+"("                     { return yytext[0]; }
+")"                     { return yytext[0]; }
+"["                     { return yytext[0]; }
+"]"                     { return yytext[0]; }
+"."                     { return yytext[0]; }
+","                     { return yytext[0]; }
+":"                     { return yytext[0]; }
+";"                     { return yytext[0]; }
+
 "if"                    { return IF; }
 "else"                  { return ELSE; }
 "while"                 { return WHILE; }
@@ -31,10 +37,6 @@ identifier        {alpha}({alpha}|{digit})*
 "int"                   { return INT; }
 "float"                 { return FLOAT; }
 "void"                  { return VOID; }
-"."                     { return DOT; }
-","                     { return COMMA; }
-":"                     { return COLON; }
-";"                     { return SEMICOLON; }
 "="                     { return ASSIGNMENT; }
 ">"                     { return GT; }
 "<"                     { return LT; }
