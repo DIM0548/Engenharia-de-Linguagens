@@ -1,6 +1,6 @@
-# Compilador para Linguagem (Nome)
+# Compilador para Linguagem (Poti)
 
-Este projeto consiste em um compilador para uma linguagem  (nome), desenvolvido com ferramentas como **Flex**, **Bison**, e **GCC**. O compilador suporta análise léxica, análise sintática e geração de código intermediário em **C**.
+Este projeto consiste em um compilador para a linguagem Poti, desenvolvido com ferramentas como **Flex**, **Bison**, e **GCC**. O compilador suporta análise léxica, análise sintática e geração de código intermediário em **C**.
 
 ## 📋 Pré-requisitos
 
@@ -23,7 +23,7 @@ Para executar este projeto, os seguintes programas devem estar instalados no sis
     ```bash
     git clone https://github.com/DIM0548/Engenharia-de-Linguagens.git <PASTA_DO_REPOSITORIO>
     cd <PASTA_DO_REPOSITORIO>
-> Arquivo de entrada: Coloque os arquivos de entrada na <a href="./entradas/" style="color:gold;">pasta entradas</a> com extensão `.txt`.
+> Arquivo de entrada: Coloque os arquivos de entrada na <a href="./problemas/" style="color:gold;">pasta problemas</a> com extensão `.poti`.
 - Compile o projeto:
     ```bash
     sh start.sh
@@ -47,14 +47,14 @@ Para executar este projeto, os seguintes programas devem estar instalados no sis
 ## ✅ Lista de Afazeres
 
 ### 📄 Documentação do Compilador
-- [ ] **Introdução**: Visão geral do projeto.
+- [x] **Introdução**: Visão geral do projeto.
 - [ ] **Design da Implementação**:
     - [ ] Transformação do código-fonte em unidades léxicas.
     - [ ] Representação de símbolos e tabela de símbolos.
     - [ ] Tratamento de estruturas condicionais e de repetição.
     - [ ] Tratamento de subprogramas.
     - [ ] Verificações de tipos, faixas e duplicidade de declaração.
-- [ ] **Instruções de Uso**: Como compilar e rodar o programa.
+- [x] **Instruções de Uso**: Como compilar e rodar o programa.
 
 ---
 
@@ -88,4 +88,4 @@ Para executar este projeto, os seguintes programas devem estar instalados no sis
 - **Allyson G. S. Carmo** - [AllysonGustavo1](https://github.com/AllysonGustavo1)
 - **Edivânia P. Oliveira** - [edivaniap](https://github.com/edivaniap)
 - **Ianco S. Oliveira** - [ianco-so](https://github.com/ianco-so)
-- **João V. S. Saturnino** - [jv]()
+- **João V. S. Saturnino** - [joaovictorsaturnino](https://github.com/joaovictorsaturnino)
