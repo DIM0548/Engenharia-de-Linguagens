@@ -2,6 +2,6 @@ function main (): void { // TODO: Resolver se o main vai ser um procedure (uma m
     x: float = 2.0;
     y: float = 3.0;
     c: int   = 4;
-
+    
     log("Resultado: ", x^2 - y + c); // TODO: Resolver como vai ser a impressão de coisas na tela
 }
